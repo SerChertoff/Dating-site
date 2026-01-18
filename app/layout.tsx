@@ -18,6 +18,16 @@ export default function RootLayout({
         {/* Preconnect для ускорения подключения к CDN */}
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        {/* Preconnect для Unsplash (hero изображение) */}
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Preload критического hero изображения для улучшения LCP */}
+        <link
+          rel="preload"
+          as="image"
+          href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+          fetchPriority="high"
+        />
         {/* Fallback для браузеров без JavaScript */}
         <noscript>
           <link

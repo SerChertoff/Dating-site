@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Testimonial } from '@/types'
 
 interface HomeSectionProps {
@@ -51,11 +52,24 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
     <section id="home-section" className="active-section">
       <div className="container">
         <div className="hero">
-          <h1>Найдите свою идеальную пару сегодня</h1>
-          <p>Присоединяйтесь к тысячам одиноких, ищущих любовь на HeartMatch</p>
-          <button className="cta-button" id="hero-signup-btn" onClick={onSignupClick}>
-            Создать бесплатный профиль
-          </button>
+          {/* Оптимизированное hero изображение для улучшения LCP */}
+          <Image
+            src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            alt="HeartMatch - Find Your Perfect Match"
+            fill
+            priority
+            quality={85}
+            className="hero-background"
+            sizes="100vw"
+            style={{ objectFit: 'cover', zIndex: -1 }}
+          />
+          <div className="hero-content">
+            <h1>Найдите свою идеальную пару сегодня</h1>
+            <p>Присоединяйтесь к тысячам одиноких, ищущих любовь на HeartMatch</p>
+            <button className="cta-button" id="hero-signup-btn" onClick={onSignupClick}>
+              Создать бесплатный профиль
+            </button>
+          </div>
         </div>
 
         <div className="features">
@@ -84,7 +98,13 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
                 key={testimonial.id}
                 className={`testimonial ${index === currentTestimonial ? 'active' : ''}`}
               >
-                <img src={testimonial.image} alt={testimonial.author} />
+                <Image
+                  src={testimonial.image}
+                  alt={testimonial.author}
+                  width={100}
+                  height={100}
+                  className="testimonial-image"
+                />
                 <p>"{testimonial.text}"</p>
                 <span>- {testimonial.author}</span>
               </div>

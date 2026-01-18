@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { User } from '@/types'
 import { sampleUsers } from '@/data/sampleData'
 
@@ -105,7 +106,14 @@ export default function MatchesSection({
               className="match-card"
               onClick={() => onViewProfile(user)}
             >
-              <img src={user.photo} alt={user.name} className="match-img" />
+              <Image
+                src={user.photo}
+                alt={user.name}
+                width={250}
+                height={200}
+                className="match-img"
+                loading="lazy"
+              />
               <div className="match-info">
                 <div className="match-name-age">
                   <span className="match-name">{user.name}</span>
