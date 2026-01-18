@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartMatch - Find Your Perfect Match</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">HeartMatch</div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" id="home-link"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" id="matches-link"><i class="fas fa-heart"></i> Matches</a></li>
+                    <li><a href="#" id="messages-link"><i class="fas fa-envelope"></i> Messages</a></li>
+                    <li><a href="#" id="profile-link"><i class="fas fa-user"></i> Profile</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button id="login-btn">Login</button>
+                <button id="signup-btn">Sign Up</button>
+            </div>
+            <div class="user-menu hidden" id="user-menu">
+                <img src="https://via.placeholder.com/40" alt="Profile" id="user-avatar">
+                <div class="dropdown-content">
+                    <a href="#">My Profile</a>
+                    <a href="#">Settings</a>
+                    <a href="#" id="logout-btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home-section" class="active-section">
+            <div class="hero">
+                <h1>Find Your Perfect Match Today</h1>
+                <p>Join thousands of singles looking for love on HeartMatch</p>
+                <button class="cta-button" id="hero-signup-btn">Create Free Profile</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Smart Matching</h3>
+                    <p>Our algorithm finds compatible partners based on your preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments"></i>
+                    <h3>Real Chat</h3>
+                    <p>Connect instantly with your matches through our messaging system.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Safe & Secure</h3>
+                    <p>Your privacy and security are our top priorities.</p>
+                </div>
+            </div>
+
+            <div class="testimonials">
+                <h2>Success Stories</h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial active">
+                        <img src="https://via.placeholder.com/100" alt="Couple 1">
+                        <p>"We met on HeartMatch and have been inseparable ever since!"</p>
+                        <span>- Sarah & Mark</span>
+                    </div>
+                    <div class="testimonial">
+                        <img src="https://via.placeholder.com/100" alt="Couple 2">
+                        <p>"After years of searching, I found my soulmate here."</p>
+                        <span>- Jessica & David</span>
+                    </div>
+                    <div class="testimonial">
+                        <img src="https://via.placeholder.com/100" alt="Couple 3">
+                        <p>"The matching system really works. We're getting married next month!"</p>
+                        <span>- Emily & James</span>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="slider-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Matches Section -->
+        <section id="matches-section">
+            <h2>Your Potential Matches</h2>
+            <div class="filter-options">
+                <select id="gender-filter">
+                    <option value="all">All Genders</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <select id="age-filter">
+                    <option value="all">All Ages</option>
+                    <option value="18-25">18-25</option>
+                    <option value="26-35">26-35</option>
+                    <option value="36-45">36-45</option>
+                    <option value="46+">46+</option>
+                </select>
+                <select id="distance-filter">
+                    <option value="all">Any Distance</option>
+                    <option value="10">Within 10 miles</option>
+                    <option value="25">Within 25 miles</option>
+                    <option value="50">Within 50 miles</option>
+                </select>
+            </div>
+            <div class="matches-grid" id="matches-container">
+                <!-- Matches will be loaded here via JavaScript -->
+            </div>
+            <div class="load-more">
+                <button id="load-more-btn">Load More Matches</button>
+            </div>
+        </section>
+
+        <!-- Messages Section -->
+        <section id="messages-section">
+            <div class="messages-container">
+                <div class="conversation-list">
+                    <h3>Your Conversations</h3>
+                    <div class="search-conversations">
+                        <input type="text" placeholder="Search conversations...">
+                    </div>
+                    <div class="conversations" id="conversations-list">
+                        <!-- Conversations will be loaded here via JavaScript -->
+                    </div>
+                </div>
+                <div class="message-view">
+                    <div class="message-header">
+                        <div class="recipient-info">
+                            <img src="https://via.placeholder.com/50" alt="Recipient">
+                            <h4 id="message-recipient">Select a conversation</h4>
+                        </div>
+                    </div>
+                    <div class="messages" id="messages-display">
+                        <p class="empty-message">Select a conversation to view messages</p>
+                    </div>
+                    <div class="message-input">
+                        <textarea id="message-text" placeholder="Type your message here..." disabled></textarea>
+                        <button id="send-message-btn" disabled><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-photo">
+                        <img src="https://via.placeholder.com/150" alt="Profile Photo" id="profile-img">
+                        <button id="change-photo-btn">Change Photo</button>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">Your Name</h2>
+                        <p id="profile-age-location">Age • Location</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <span id="profile-matches">0</span>
+                                <span>Matches</span>
+                            </div>
+                            <div class="stat">
+                                <span id="profile-conversations">0</span>
+                                <span>Conversations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-details">
+                    <div class="detail-section">
+                        <h3>About Me</h3>
+                        <p id="profile-about">Edit your profile to add information about yourself.</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Interests</h3>
+                        <div class="interests" id="profile-interests">
+                            <!-- Interests will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Preferences</h3>
+                        <div class="preferences">
+                            <div class="preference">
+                                <span>Looking for:</span>
+                                <span id="profile-looking-for">Not specified</span>
+                            </div>
+                            <div class="preference">
+                                <span>Age range:</span>
+                                <span id="profile-age-range">Not specified</span>
+                            </div>
+                            <div class="preference">
+                                <span>Distance:</span>
+                                <span id="profile-distance">Not specified</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button id="edit-profile-btn">Edit Profile</button>
+                    <button id="premium-btn">Go Premium</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auth Modals -->
+        <div class="modal" id="login-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Login to HeartMatch</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+                <div class="auth-links">
+                    <a href="#" id="forgot-password-link">Forgot password?</a>
+                    <p>Don't have an account? <a href="#" id="show-signup-link">Sign up</a></p>
+                </div>
+                <div class="social-login">
+                    <p>Or login with:</p>
+                    <div class="social-buttons">
+                        <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
+                        <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="signup-modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Create Your HeartMatch Profile</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-gender">Gender</label>
+                        <select id="signup-gender" required>
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-birthdate">Birthdate</label>
+                        <input type="date" id="signup-birthdate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-location">Location</label>
+                        <input type="text" id="signup-location" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Account</button>
+                </form>
+                <div class="auth-links">
+                    <p>Already have an account? <a href="#" id="show-login-link">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile View Modal -->
+        <div class="modal" id="profile-view-modal">
+            <div class="modal-content profile-view">
+                <span class="close-modal">&times;</span>
+                <div class="profile-view-header">
+                    <div class="profile-view-photo">
+                        <img src="https://via.placeholder.com/200" alt="Profile Photo" id="view-profile-img">
+                    </div>
+                    <div class="profile-view-info">
+                        <h2 id="view-profile-name">Profile Name</h2>
+                        <p id="view-profile-age-location">Age • Location</p>
+                        <div class="profile-view-actions">
+                            <button class="like-btn" id="profile-like-btn"><i class="fas fa-heart"></i> Like</button>
+                            <button class="message-btn" id="profile-message-btn"><i class="fas fa-envelope"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-view-details">
+                    <div class="detail-section">
+                        <h3>About Me</h3>
+                        <p id="view-profile-about">No information provided.</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Interests</h3>
+                        <div class="interests" id="view-profile-interests">
+                            <!-- Interests will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="compatibility-meter">
+                        <h3>Your Compatibility</h3>
+                        <div class="meter">
+                            <div class="meter-fill" id="compatibility-percentage" style="width: 75%;">75%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Help</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Safety Tips</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 HeartMatch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
