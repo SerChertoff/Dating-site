@@ -15,10 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        {/* Preconnect для ускорения подключения к CDN */}
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-        {/* Preconnect для Unsplash (hero изображение) */}
+        {/* Критические preconnect - только для критических ресурсов */}
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Preload критического hero изображения для улучшения LCP */}
@@ -28,6 +25,9 @@ export default function RootLayout({
           href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
           fetchPriority="high"
         />
+        {/* Некритические preconnect - отложены через dns-prefetch */}
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        <link rel="dns-prefetch" href="https://randomuser.me" />
         {/* Fallback для браузеров без JavaScript */}
         <noscript>
           <link

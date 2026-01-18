@@ -1,16 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import HomeSection from '@/components/HomeSection'
-import MatchesSection from '@/components/MatchesSection'
-import MessagesSection from '@/components/MessagesSection'
-import ProfileSection from '@/components/ProfileSection'
-import LoginModal from '@/components/LoginModal'
-import SignupModal from '@/components/SignupModal'
-import ProfileViewModal from '@/components/ProfileViewModal'
-import { User, Conversation } from '@/types'
+import { User } from '@/types'
+
+// Динамический импорт некритических компонентов для уменьшения размера начального бандла
+const MatchesSection = dynamic(() => import('@/components/MatchesSection'), {
+  loading: () => <div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>,
+})
+
+const MessagesSection = dynamic(() => import('@/components/MessagesSection'), {
+  loading: () => <div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>,
+})
+
+const ProfileSection = dynamic(() => import('@/components/ProfileSection'), {
+  loading: () => <div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>,
+})
+
+// Модальные окна загружаются только при необходимости (без SSR для уменьшения размера бандла)
+const LoginModal = dynamic(() => import('@/components/LoginModal'), { ssr: false })
+const SignupModal = dynamic(() => import('@/components/SignupModal'), { ssr: false })
+const ProfileViewModal = dynamic(() => import('@/components/ProfileViewModal'), { ssr: false })
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home')
@@ -78,60 +91,72 @@ export default function Home() {
           <HomeSection onSignupClick={() => setShowSignupModal(true)} />
         )}
         {activeSection === 'matches' && (
-          <MatchesSection
-            currentUser={currentUser}
-            onViewProfile={handleViewProfile}
-            onLoginRequired={() => setShowLoginModal(true)}
-          />
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>}>
+            <MatchesSection
+              currentUser={currentUser}
+              onViewProfile={handleViewProfile}
+              onLoginRequired={() => setShowLoginModal(true)}
+            />
+          </Suspense>
         )}
         {activeSection === 'messages' && (
-          <MessagesSection currentUser={currentUser} />
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>}>
+            <MessagesSection currentUser={currentUser} />
+          </Suspense>
         )}
         {activeSection === 'profile' && (
-          <ProfileSection
-            currentUser={currentUser}
-            onLoginRequired={() => setShowLoginModal(true)}
-          />
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>}>
+            <ProfileSection
+              currentUser={currentUser}
+              onLoginRequired={() => setShowLoginModal(true)}
+            />
+          </Suspense>
         )}
       </main>
       <Footer />
       {showLoginModal && (
-        <LoginModal
-          onClose={() => setShowLoginModal(false)}
-          onLogin={handleLogin}
-          onShowSignup={() => {
-            setShowLoginModal(false)
-            setShowSignupModal(true)
-          }}
-        />
+        <Suspense fallback={null}>
+          <LoginModal
+            onClose={() => setShowLoginModal(false)}
+            onLogin={handleLogin}
+            onShowSignup={() => {
+              setShowLoginModal(false)
+              setShowSignupModal(true)
+            }}
+          />
+        </Suspense>
       )}
       {showSignupModal && (
-        <SignupModal
-          onClose={() => setShowSignupModal(false)}
-          onSignup={handleSignup}
-          onShowLogin={() => {
-            setShowSignupModal(false)
-            setShowLoginModal(true)
-          }}
-        />
+        <Suspense fallback={null}>
+          <SignupModal
+            onClose={() => setShowSignupModal(false)}
+            onSignup={handleSignup}
+            onShowLogin={() => {
+              setShowSignupModal(false)
+              setShowLoginModal(true)
+            }}
+          />
+        </Suspense>
       )}
       {showProfileViewModal && selectedProfile && (
-        <ProfileViewModal
-          user={selectedProfile}
-          currentUser={currentUser}
-          onClose={() => {
-            setShowProfileViewModal(false)
-            setSelectedProfile(null)
-          }}
-          onStartConversation={() => {
-            setShowProfileViewModal(false)
-            setActiveSection('messages')
-          }}
-          onLoginRequired={() => {
-            setShowProfileViewModal(false)
-            setShowLoginModal(true)
-          }}
-        />
+        <Suspense fallback={null}>
+          <ProfileViewModal
+            user={selectedProfile}
+            currentUser={currentUser}
+            onClose={() => {
+              setShowProfileViewModal(false)
+              setSelectedProfile(null)
+            }}
+            onStartConversation={() => {
+              setShowProfileViewModal(false)
+              setActiveSection('messages')
+            }}
+            onLoginRequired={() => {
+              setShowProfileViewModal(false)
+              setShowLoginModal(true)
+            }}
+          />
+        </Suspense>
       )}
     </>
   )

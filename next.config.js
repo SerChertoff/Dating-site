@@ -25,7 +25,11 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Оптимизация заголовков для предварительного подключения
+  // Оптимизация компиляции
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Оптимизация заголовков - только критические preconnect
   async headers() {
     return [
       {
@@ -33,11 +37,15 @@ const nextConfig = {
         headers: [
           {
             key: 'Link',
-            value: '<https://cdnjs.cloudflare.com>; rel=preconnect, <https://images.unsplash.com>; rel=preconnect',
+            value: '<https://images.unsplash.com>; rel=preconnect',
           },
         ],
       },
     ];
+  },
+  // Оптимизация экспериментальных функций
+  experimental: {
+    optimizePackageImports: ['@/components'],
   },
 }
 

@@ -7,29 +7,42 @@ const FONT_AWESOME_URL =
 
 export default function FontAwesomeLoader() {
   useEffect(() => {
-    // Проверяем, не загружен ли уже Font Awesome
-    const existingLink = document.querySelector(
-      `link[href="${FONT_AWESOME_URL}"]`
-    );
+    // Отложенная загрузка Font Awesome - не блокирует критический рендеринг
+    // Используем requestIdleCallback для загрузки в свободное время браузера
+    const loadFontAwesome = () => {
+      // Проверяем, не загружен ли уже Font Awesome
+      const existingLink = document.querySelector(
+        `link[href="${FONT_AWESOME_URL}"]`
+      );
 
-    if (existingLink) {
-      return; // CSS уже загружен
-    }
+      if (existingLink) {
+        return; // CSS уже загружен
+      }
 
-    // Асинхронная загрузка Font Awesome CSS
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = FONT_AWESOME_URL;
-    link.crossOrigin = "anonymous";
-    // Устанавливаем media="print" для асинхронной загрузки, затем меняем на "all"
-    link.media = "print";
-    link.onload = () => {
-      link.media = "all";
-      // Добавляем font-display: swap для всех @font-face правил Font Awesome
-      // Это переопределит правила Font Awesome с более высоким приоритетом
-      injectFontDisplaySwap();
+      // Асинхронная загрузка Font Awesome CSS
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = FONT_AWESOME_URL;
+      link.crossOrigin = "anonymous";
+      // Устанавливаем media="print" для асинхронной загрузки, затем меняем на "all"
+      link.media = "print";
+      link.onload = () => {
+        link.media = "all";
+        // Добавляем font-display: swap для всех @font-face правил Font Awesome
+        injectFontDisplaySwap();
+      };
+      document.head.appendChild(link);
     };
-    document.head.appendChild(link);
+
+    // Загружаем после того, как критический контент отрендерится
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(loadFontAwesome, { timeout: 2000 });
+      } else {
+        // Fallback для браузеров без requestIdleCallback
+        setTimeout(loadFontAwesome, 100);
+      }
+    }
   }, []);
 
   return null;
