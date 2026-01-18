@@ -83,23 +83,41 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
   }
 
   return (
-    <div className="modal active" onClick={onClose}>
+    <div
+      className="modal active"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="signup-modal-title"
+      onClick={onClose}
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <span className="close-modal" onClick={onClose}>
+        <button
+          className="close-modal"
+          type="button"
+          aria-label="Закрыть окно регистрации"
+          onClick={onClose}
+        >
           &times;
-        </span>
-        <h2>Создайте профиль HeartMatch</h2>
-        <form id="signup-form" onSubmit={handleSubmit}>
-          {error && <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>}
+        </button>
+        <h2 id="signup-modal-title">Создайте профиль HeartMatch</h2>
+        <form id="signup-form" onSubmit={handleSubmit} noValidate>
+          {error && (
+            <div role="alert" aria-live="polite" style={{ color: 'red', marginBottom: '15px' }}>
+              {error}
+            </div>
+          )}
           <div className="form-group">
             <label htmlFor="signup-name">Полное имя</label>
             <input
               type="text"
               id="signup-name"
               name="name"
+              autoComplete="name"
               value={formData.name}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
           <div className="form-group">
@@ -108,9 +126,12 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
               type="email"
               id="signup-email"
               name="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
           <div className="form-group">
@@ -119,9 +140,12 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
               type="password"
               id="signup-password"
               name="password"
+              autoComplete="new-password"
               value={formData.password}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
           <div className="form-group">
@@ -132,6 +156,8 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
               value={formData.gender}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             >
               <option value="">Выберите</option>
               <option value="male">Мужской</option>
@@ -145,9 +171,12 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
               type="date"
               id="signup-birthdate"
               name="birthdate"
+              autoComplete="bday"
               value={formData.birthdate}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
           <div className="form-group">
@@ -156,19 +185,29 @@ export default function SignupModal({ onClose, onSignup, onShowLogin }: SignupMo
               type="text"
               id="signup-location"
               name="location"
+              autoComplete="address-level2"
               value={formData.location}
               onChange={handleChange}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" aria-label="Создать новый аккаунт">
             Создать аккаунт
           </button>
         </form>
         <div className="auth-links">
           <p>
             Уже есть аккаунт?{' '}
-            <a href="#" onClick={(e) => { e.preventDefault(); onShowLogin() }}>
+            <a
+              href="#login"
+              onClick={(e) => {
+                e.preventDefault()
+                onShowLogin()
+              }}
+              aria-label="Перейти к входу"
+            >
               Войти
             </a>
           </p>

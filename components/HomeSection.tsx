@@ -49,13 +49,13 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
   }
 
   return (
-    <section id="home-section" className="active-section">
+    <main id="home-section" className="active-section" role="main">
       <div className="container">
-        <div className="hero">
+        <section className="hero" aria-label="Hero section">
           {/* Оптимизированное hero изображение для улучшения LCP */}
           <Image
             src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            alt="HeartMatch - Find Your Perfect Match"
+            alt="Счастливая пара на HeartMatch"
             fill
             priority
             quality={85}
@@ -66,60 +66,84 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
           <div className="hero-content">
             <h1>Найдите свою идеальную пару сегодня</h1>
             <p>Присоединяйтесь к тысячам одиноких, ищущих любовь на HeartMatch</p>
-            <button className="cta-button" id="hero-signup-btn" onClick={onSignupClick}>
+            <button
+              className="cta-button"
+              id="hero-signup-btn"
+              type="button"
+              aria-label="Создать бесплатный профиль на HeartMatch"
+              onClick={onSignupClick}
+            >
               Создать бесплатный профиль
             </button>
           </div>
-        </div>
+        </section>
 
-        <div className="features">
+        <section className="features" aria-label="Features">
           <div className="feature-card">
-            <i className="fas fa-heart"></i>
+            <i className="fas fa-heart" aria-hidden="true"></i>
             <h3>Умный подбор</h3>
             <p>Наш алгоритм находит совместимых партнеров на основе ваших предпочтений.</p>
           </div>
           <div className="feature-card">
-            <i className="fas fa-comments"></i>
+            <i className="fas fa-comments" aria-hidden="true"></i>
             <h3>Реальный чат</h3>
             <p>Связывайтесь мгновенно со своими парами через нашу систему сообщений.</p>
           </div>
           <div className="feature-card">
-            <i className="fas fa-shield-alt"></i>
+            <i className="fas fa-shield-alt" aria-hidden="true"></i>
             <h3>Безопасно и надежно</h3>
             <p>Ваша конфиденциальность и безопасность - наш главный приоритет.</p>
           </div>
-        </div>
+        </section>
 
-        <div className="testimonials">
+        <section className="testimonials" aria-label="Success stories">
           <h2>Истории успеха</h2>
-          <div className="testimonial-slider">
+          <div className="testimonial-slider" role="region" aria-label="Testimonials slider" id="testimonials">
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
                 className={`testimonial ${index === currentTestimonial ? 'active' : ''}`}
+                role="article"
+                aria-hidden={index !== currentTestimonial}
+                aria-label={`Testimonial from ${testimonial.author}`}
+                aria-live="polite"
               >
                 <Image
                   src={testimonial.image}
-                  alt={testimonial.author}
+                  alt={`Фото ${testimonial.author}`}
                   width={100}
                   height={100}
                   className="testimonial-image"
                 />
-                <p>"{testimonial.text}"</p>
-                <span>- {testimonial.author}</span>
+                <blockquote>
+                  <p>"{testimonial.text}"</p>
+                  <cite>- {testimonial.author}</cite>
+                </blockquote>
               </div>
             ))}
           </div>
-          <div className="slider-controls">
-            <button className="slider-prev" onClick={prevTestimonial}>
-              <i className="fas fa-chevron-left"></i>
+          <div className="slider-controls" role="group" aria-label="Testimonial navigation">
+            <button
+              className="slider-prev"
+              type="button"
+              aria-label="Предыдущий отзыв"
+              onClick={prevTestimonial}
+            >
+              <i className="fas fa-chevron-left" aria-hidden="true"></i>
+              <span className="sr-only">Предыдущий</span>
             </button>
-            <button className="slider-next" onClick={nextTestimonial}>
-              <i className="fas fa-chevron-right"></i>
+            <button
+              className="slider-next"
+              type="button"
+              aria-label="Следующий отзыв"
+              onClick={nextTestimonial}
+            >
+              <i className="fas fa-chevron-right" aria-hidden="true"></i>
+              <span className="sr-only">Следующий</span>
             </button>
           </div>
-        </div>
+        </section>
       </div>
-    </section>
+    </main>
   )
 }

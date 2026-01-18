@@ -10,13 +10,15 @@ interface ProfileSectionProps {
 export default function ProfileSection({ currentUser, onLoginRequired }: ProfileSectionProps) {
   if (!currentUser) {
     return (
-      <section id="profile-section" className="active-section">
+      <section id="profile-section" className="active-section" aria-label="Profile section">
         <div className="container">
           <div style={{ textAlign: 'center', padding: '50px 20px' }}>
             <h2>Войдите, чтобы просматривать профиль</h2>
             <p>Пожалуйста, войдите в систему, чтобы видеть свой профиль.</p>
             <button
+              type="button"
               className="cta-button"
+              aria-label="Войти в аккаунт для просмотра профиля"
               onClick={onLoginRequired}
               style={{ marginTop: '20px' }}
             >
@@ -29,26 +31,42 @@ export default function ProfileSection({ currentUser, onLoginRequired }: Profile
   }
 
   return (
-    <section id="profile-section" className="active-section">
+    <section id="profile-section" className="active-section" aria-label="Profile section">
       <div className="container">
-        <div className="profile-container">
+        <article className="profile-container">
           <div className="profile-header">
             <div className="profile-photo">
-              <img src={currentUser.photo} alt="Profile Photo" id="profile-img" />
-              <button id="change-photo-btn">Изменить фото</button>
+              <img
+                src={currentUser.photo}
+                alt={`Фото профиля ${currentUser.name}`}
+                id="profile-img"
+                width={150}
+                height={150}
+              />
+              <button
+                id="change-photo-btn"
+                type="button"
+                aria-label="Изменить фото профиля"
+              >
+                Изменить фото
+              </button>
             </div>
             <div className="profile-info">
-              <h2 id="profile-name">{currentUser.name}</h2>
+              <h1 id="profile-name">{currentUser.name}</h1>
               <p id="profile-age-location">
                 {currentUser.age} • {currentUser.location}
               </p>
-              <div className="profile-stats">
+              <div className="profile-stats" role="group" aria-label="Profile statistics">
                 <div className="stat">
-                  <span id="profile-matches">{currentUser.matches || 0}</span>
+                  <span id="profile-matches" aria-label={`${currentUser.matches || 0} пар`}>
+                    {currentUser.matches || 0}
+                  </span>
                   <span>Пары</span>
                 </div>
                 <div className="stat">
-                  <span id="profile-conversations">{currentUser.conversations || 0}</span>
+                  <span id="profile-conversations" aria-label={`${currentUser.conversations || 0} диалогов`}>
+                    {currentUser.conversations || 0}
+                  </span>
                   <span>Диалоги</span>
                 </div>
               </div>
@@ -56,17 +74,17 @@ export default function ProfileSection({ currentUser, onLoginRequired }: Profile
           </div>
 
           <div className="profile-details">
-            <div className="detail-section">
-              <h3>О себе</h3>
+            <section className="detail-section" aria-labelledby="about-heading">
+              <h3 id="about-heading">О себе</h3>
               <p id="profile-about">{currentUser.about}</p>
-            </div>
+            </section>
 
-            <div className="detail-section">
-              <h3>Интересы</h3>
-              <div className="interests" id="profile-interests">
+            <section className="detail-section" aria-labelledby="interests-heading">
+              <h3 id="interests-heading">Интересы</h3>
+              <div className="interests" id="profile-interests" role="list">
                 {currentUser.interests && currentUser.interests.length > 0 ? (
                   currentUser.interests.map((interest, index) => (
-                    <div key={index} className="interest-tag">
+                    <div key={index} className="interest-tag" role="listitem">
                       {interest}
                     </div>
                   ))
@@ -74,32 +92,44 @@ export default function ProfileSection({ currentUser, onLoginRequired }: Profile
                   <p>Интересы пока не добавлены.</p>
                 )}
               </div>
-            </div>
+            </section>
 
-            <div className="detail-section">
-              <h3>Предпочтения</h3>
-              <div className="preferences">
+            <section className="detail-section" aria-labelledby="preferences-heading">
+              <h3 id="preferences-heading">Предпочтения</h3>
+              <dl className="preferences">
                 <div className="preference">
-                  <span>Ищу:</span>
-                  <span id="profile-looking-for">{currentUser.lookingFor}</span>
+                  <dt>Ищу:</dt>
+                  <dd id="profile-looking-for">{currentUser.lookingFor}</dd>
                 </div>
                 <div className="preference">
-                  <span>Возрастной диапазон:</span>
-                  <span id="profile-age-range">{currentUser.ageRange}</span>
+                  <dt>Возрастной диапазон:</dt>
+                  <dd id="profile-age-range">{currentUser.ageRange}</dd>
                 </div>
                 <div className="preference">
-                  <span>Расстояние:</span>
-                  <span id="profile-distance">{currentUser.distance}</span>
+                  <dt>Расстояние:</dt>
+                  <dd id="profile-distance">{currentUser.distance}</dd>
                 </div>
-              </div>
-            </div>
+              </dl>
+            </section>
           </div>
 
-          <div className="profile-actions">
-            <button id="edit-profile-btn">Редактировать профиль</button>
-            <button id="premium-btn">Перейти на Premium</button>
+          <div className="profile-actions" role="group" aria-label="Profile actions">
+            <button
+              id="edit-profile-btn"
+              type="button"
+              aria-label="Редактировать профиль"
+            >
+              Редактировать профиль
+            </button>
+            <button
+              id="premium-btn"
+              type="button"
+              aria-label="Перейти на Premium подписку"
+            >
+              Перейти на Premium
+            </button>
           </div>
-        </div>
+        </article>
       </div>
     </section>
   )

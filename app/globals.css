@@ -48,6 +48,19 @@ button {
     display: none !important;
 }
 
+/* Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
 /* Стили шапки */
 header {
     background-color: var(--white);
@@ -769,8 +782,13 @@ section.active-section {
     border-bottom: 1px dashed #eee;
 }
 
+.preference dt,
 .preference span:first-child {
     font-weight: 600;
+}
+
+.preference dd {
+    margin: 0;
 }
 
 .profile-actions {

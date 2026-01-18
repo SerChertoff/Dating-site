@@ -37,47 +37,72 @@ export default function ProfileViewModal({
   const compatibility = Math.floor(Math.random() * 30) + 70 // 70-100%
 
   return (
-    <div className="modal active" onClick={onClose}>
+    <div
+      className="modal active"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="profile-view-title"
+      onClick={onClose}
+    >
       <div className="modal-content profile-view" onClick={(e) => e.stopPropagation()}>
-        <span className="close-modal" onClick={onClose}>
+        <button
+          className="close-modal"
+          type="button"
+          aria-label="Закрыть просмотр профиля"
+          onClick={onClose}
+        >
           &times;
-        </span>
+        </button>
         <div className="profile-view-header">
           <div className="profile-view-photo">
-            <img src={user.photo} alt="Profile Photo" id="view-profile-img" />
+            <img
+              src={user.photo}
+              alt={`Фото профиля ${user.name}`}
+              id="view-profile-img"
+              width={200}
+              height={200}
+            />
           </div>
           <div className="profile-view-info">
-            <h2 id="view-profile-name">{user.name}</h2>
+            <h2 id="profile-view-title">{user.name}</h2>
             <p id="view-profile-age-location">
               {user.age} • {user.location}
             </p>
-            <div className="profile-view-actions">
-              <button className="like-btn" id="profile-like-btn" onClick={handleLike}>
-                <i className="fas fa-heart"></i> Нравится
+            <div className="profile-view-actions" role="group" aria-label="Profile actions">
+              <button
+                type="button"
+                className="like-btn"
+                id="profile-like-btn"
+                aria-label={`Поставить лайк ${user.name}`}
+                onClick={handleLike}
+              >
+                <i className="fas fa-heart" aria-hidden="true"></i> Нравится
               </button>
               <button
+                type="button"
                 className="message-btn"
                 id="profile-message-btn"
+                aria-label={`Написать сообщение ${user.name}`}
                 onClick={handleMessage}
               >
-                <i className="fas fa-envelope"></i> Сообщение
+                <i className="fas fa-envelope" aria-hidden="true"></i> Сообщение
               </button>
             </div>
           </div>
         </div>
 
         <div className="profile-view-details">
-          <div className="detail-section">
-            <h3>О себе</h3>
+          <section className="detail-section" aria-labelledby="view-about-heading">
+            <h3 id="view-about-heading">О себе</h3>
             <p id="view-profile-about">{user.about}</p>
-          </div>
+          </section>
 
-          <div className="detail-section">
-            <h3>Интересы</h3>
-            <div className="interests" id="view-profile-interests">
+          <section className="detail-section" aria-labelledby="view-interests-heading">
+            <h3 id="view-interests-heading">Интересы</h3>
+            <div className="interests" id="view-profile-interests" role="list">
               {user.interests && user.interests.length > 0 ? (
                 user.interests.map((interest, index) => (
-                  <div key={index} className="interest-tag">
+                  <div key={index} className="interest-tag" role="listitem">
                     {interest}
                   </div>
                 ))
@@ -85,12 +110,12 @@ export default function ProfileViewModal({
                 <p>Интересы не указаны.</p>
               )}
             </div>
-          </div>
+          </section>
 
           {currentUser && (
-            <div className="compatibility-meter">
-              <h3>Ваша совместимость</h3>
-              <div className="meter">
+            <section className="compatibility-meter" aria-labelledby="compatibility-heading">
+              <h3 id="compatibility-heading">Ваша совместимость</h3>
+              <div className="meter" role="progressbar" aria-valuenow={compatibility} aria-valuemin={0} aria-valuemax={100} aria-label={`Совместимость ${compatibility} процентов`}>
                 <div
                   className="meter-fill"
                   id="compatibility-percentage"
@@ -99,7 +124,7 @@ export default function ProfileViewModal({
                   {compatibility}%
                 </div>
               </div>
-            </div>
+            </section>
           )}
         </div>
       </div>

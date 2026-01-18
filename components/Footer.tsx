@@ -21,24 +21,24 @@ export default function Footer() {
   }
 
   return (
-    <footer>
+    <footer role="contentinfo">
       <div className="container">
-        <div className="footer-links">
+        <nav className="footer-links" aria-label="Footer navigation">
           <div className="footer-column">
             <h4>Компания</h4>
-            <ul>
+            <ul role="list">
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'about')}>
+                <a href="#about" onClick={(e) => handleLinkClick(e, 'about')} aria-label="О компании HeartMatch">
                   О нас
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'careers')}>
+                <a href="#careers" onClick={(e) => handleLinkClick(e, 'careers')} aria-label="Карьерные возможности">
                   Карьера
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'press')}>
+                <a href="#press" onClick={(e) => handleLinkClick(e, 'press')} aria-label="Пресс-релизы">
                   Пресса
                 </a>
               </li>
@@ -46,19 +46,19 @@ export default function Footer() {
           </div>
           <div className="footer-column">
             <h4>Помощь</h4>
-            <ul>
+            <ul role="list">
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'faq')}>
+                <a href="#faq" onClick={(e) => handleLinkClick(e, 'faq')} aria-label="Часто задаваемые вопросы">
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'safety')}>
+                <a href="#safety" onClick={(e) => handleLinkClick(e, 'safety')} aria-label="Советы по безопасности">
                   Советы по безопасности
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'contact')}>
+                <a href="#contact" onClick={(e) => handleLinkClick(e, 'contact')} aria-label="Связаться с поддержкой">
                   Связаться с нами
                 </a>
               </li>
@@ -66,19 +66,19 @@ export default function Footer() {
           </div>
           <div className="footer-column">
             <h4>Правовая информация</h4>
-            <ul>
+            <ul role="list">
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'privacy')}>
+                <a href="#privacy" onClick={(e) => handleLinkClick(e, 'privacy')} aria-label="Политика конфиденциальности">
                   Конфиденциальность
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'terms')}>
+                <a href="#terms" onClick={(e) => handleLinkClick(e, 'terms')} aria-label="Условия использования">
                   Условия использования
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleLinkClick(e, 'cookies')}>
+                <a href="#cookies" onClick={(e) => handleLinkClick(e, 'cookies')} aria-label="Политика cookies">
                   Политика cookies
                 </a>
               </li>
@@ -86,42 +86,46 @@ export default function Footer() {
           </div>
           <div className="footer-column">
             <h4>Следите за нами</h4>
-            <div className="social-icons">
+            <div className="social-icons" role="list" aria-label="Social media links">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Facebook"
+                aria-label="Facebook - открывается в новой вкладке"
               >
-                <i className="fab fa-facebook-f"></i>
+                <i className="fab fa-facebook-f" aria-hidden="true"></i>
+                <span className="sr-only">Facebook</span>
               </a>
               <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Twitter"
+                aria-label="Twitter - открывается в новой вкладке"
               >
-                <i className="fab fa-twitter"></i>
+                <i className="fab fa-twitter" aria-hidden="true"></i>
+                <span className="sr-only">Twitter</span>
               </a>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram"
+                aria-label="Instagram - открывается в новой вкладке"
               >
-                <i className="fab fa-instagram"></i>
+                <i className="fab fa-instagram" aria-hidden="true"></i>
+                <span className="sr-only">Instagram</span>
               </a>
               <a
                 href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="TikTok"
+                aria-label="TikTok - открывается в новой вкладке"
               >
-                <i className="fab fa-tiktok"></i>
+                <i className="fab fa-tiktok" aria-hidden="true"></i>
+                <span className="sr-only">TikTok</span>
               </a>
             </div>
           </div>
-        </div>
+        </nav>
         <div className="copyright">
           <p>&copy; 2023 HeartMatch. Все права защищены.</p>
         </div>

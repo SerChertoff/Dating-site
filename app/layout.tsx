@@ -5,6 +5,22 @@ import FontAwesomeLoader from "@/components/FontAwesomeLoader";
 export const metadata: Metadata = {
   title: "HeartMatch - Find Your Perfect Match",
   description: "Join thousands of singles looking for love on HeartMatch",
+  keywords: ["dating", "знакомства", "love", "relationships", "match"],
+  authors: [{ name: "HeartMatch" }],
+  openGraph: {
+    title: "HeartMatch - Find Your Perfect Match",
+    description: "Join thousands of singles looking for love on HeartMatch",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
 };
 
 export default function RootLayout({
@@ -28,6 +44,26 @@ export default function RootLayout({
         {/* Некритические preconnect - отложены через dns-prefetch */}
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
         <link rel="dns-prefetch" href="https://randomuser.me" />
+        {/* Структурированные данные для SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "HeartMatch",
+              "description": "Современная платформа для знакомств",
+              "url": "https://heartmatch.com",
+              "applicationCategory": "DatingApplication",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "RUB"
+              }
+            })
+          }}
+        />
         {/* Fallback для браузеров без JavaScript */}
         <noscript>
           <link

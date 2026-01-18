@@ -99,16 +99,25 @@ export default function MatchesSection({
             <option value="50">До 50 км</option>
           </select>
         </div>
-        <div className="matches-grid" id="matches-container">
+        <div className="matches-grid" id="matches-container" role="list" aria-label="Potential matches">
           {usersToShow.map((user) => (
-            <div
+            <article
               key={user.id}
               className="match-card"
+              role="listitem"
               onClick={() => onViewProfile(user)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onViewProfile(user)
+                }
+              }}
+              tabIndex={0}
+              aria-label={`Профиль ${user.name}, ${user.age} лет, ${user.location}`}
             >
               <Image
                 src={user.photo}
-                alt={user.name}
+                alt={`Фото профиля ${user.name}, ${user.age} лет, ${user.location}`}
                 width={250}
                 height={200}
                 className="match-img"
@@ -125,38 +134,47 @@ export default function MatchesSection({
                 </div>
                 <div className="match-actions">
                   <button
+                    type="button"
                     className="match-btn like-btn"
+                    aria-label={`Поставить лайк ${user.name}`}
                     onClick={(e) => {
                       e.stopPropagation()
                       handleLike(user.id)
                     }}
                   >
-                    <i className="fas fa-heart"></i> Нравится
+                    <i className="fas fa-heart" aria-hidden="true"></i> Нравится
                   </button>
                   <button
+                    type="button"
                     className="match-btn message-btn"
+                    aria-label={`Написать сообщение ${user.name}`}
                     onClick={(e) => {
                       e.stopPropagation()
                       onViewProfile(user)
                     }}
                   >
-                    <i className="fas fa-envelope"></i> Сообщение
+                    <i className="fas fa-envelope" aria-hidden="true"></i> Сообщение
                   </button>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
         {displayedMatches < filteredUsers.length && (
           <div className="load-more">
-            <button id="load-more-btn" onClick={handleLoadMore}>
+            <button
+              id="load-more-btn"
+              type="button"
+              aria-label="Загрузить больше потенциальных пар"
+              onClick={handleLoadMore}
+            >
               Загрузить еще
             </button>
           </div>
         )}
         {displayedMatches >= filteredUsers.length && filteredUsers.length > 0 && (
           <div className="load-more">
-            <button id="load-more-btn" disabled>
+            <button id="load-more-btn" type="button" disabled aria-label="Все пары загружены">
               Больше нет пар
             </button>
           </div>

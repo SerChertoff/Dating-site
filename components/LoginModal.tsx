@@ -41,22 +41,41 @@ export default function LoginModal({ onClose, onLogin, onShowSignup }: LoginModa
   }
 
   return (
-    <div className="modal active" onClick={onClose}>
+    <div
+      className="modal active"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-modal-title"
+      onClick={onClose}
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <span className="close-modal" onClick={onClose}>
+        <button
+          className="close-modal"
+          type="button"
+          aria-label="Закрыть окно входа"
+          onClick={onClose}
+        >
           &times;
-        </span>
-        <h2>Вход в HeartMatch</h2>
-        <form id="login-form" onSubmit={handleSubmit}>
-          {error && <div style={{ color: 'red', marginBottom: '15px' }}>{error}</div>}
+        </button>
+        <h2 id="login-modal-title">Вход в HeartMatch</h2>
+        <form id="login-form" onSubmit={handleSubmit} noValidate>
+          {error && (
+            <div role="alert" aria-live="polite" style={{ color: 'red', marginBottom: '15px' }}>
+              {error}
+            </div>
+          )}
           <div className="form-group">
             <label htmlFor="login-email">Email</label>
             <input
               type="email"
               id="login-email"
+              name="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
           <div className="form-group">
@@ -64,12 +83,16 @@ export default function LoginModal({ onClose, onLogin, onShowSignup }: LoginModa
             <input
               type="password"
               id="login-password"
+              name="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
             />
           </div>
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" aria-label="Войти в аккаунт">
             Войти
           </button>
         </form>

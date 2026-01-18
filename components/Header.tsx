@@ -27,42 +27,71 @@ export default function Header({
   ]
 
   return (
-    <header>
+    <header role="banner">
       <div className="container">
-        <div className="logo">HeartMatch</div>
-        <nav>
-          <ul>
+        <div className="logo" role="img" aria-label="HeartMatch Logo">
+          HeartMatch
+        </div>
+        <nav role="navigation" aria-label="Main navigation">
+          <ul role="menubar">
             {sections.map((section) => (
-              <li key={section.id}>
+              <li key={section.id} role="none">
                 <a
-                  href="#"
+                  href={`#${section.id}`}
+                  role="menuitem"
+                  aria-label={section.label}
+                  aria-current={activeSection === section.id ? 'page' : undefined}
                   className={activeSection === section.id ? 'active' : ''}
                   onClick={(e) => {
                     e.preventDefault()
                     onSectionChange(section.id)
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      onSectionChange(section.id)
+                    }
+                  }}
                 >
-                  <i className={section.icon}></i> {section.label}
+                  <i className={section.icon} aria-hidden="true"></i> {section.label}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
         {!currentUser ? (
-          <div className="auth-buttons">
-            <button id="login-btn" onClick={onLoginClick}>
+          <div className="auth-buttons" role="group" aria-label="Authentication buttons">
+            <button
+              id="login-btn"
+              type="button"
+              aria-label="Login to your account"
+              onClick={onLoginClick}
+            >
               Login
             </button>
-            <button id="signup-btn" onClick={onSignupClick}>
+            <button
+              id="signup-btn"
+              type="button"
+              aria-label="Sign up for a new account"
+              onClick={onSignupClick}
+            >
               Sign Up
             </button>
           </div>
         ) : (
-          <div className="user-menu">
-            <img src={currentUser.photo} alt="Profile" id="user-avatar" />
-            <div className="dropdown-content">
+          <div className="user-menu" role="button" aria-label="User menu" tabIndex={0}>
+            <img
+              src={currentUser.photo}
+              alt={`${currentUser.name} profile picture`}
+              id="user-avatar"
+              width={40}
+              height={40}
+            />
+            <div className="dropdown-content" role="menu" aria-label="User menu options">
               <a
-                href="#"
+                href="#profile"
+                role="menuitem"
+                aria-label="View my profile"
                 onClick={(e) => {
                   e.preventDefault()
                   onSectionChange('profile')
@@ -70,12 +99,19 @@ export default function Header({
               >
                 My Profile
               </a>
-              <a href="#" onClick={(e) => e.preventDefault()}>
+              <a
+                href="#settings"
+                role="menuitem"
+                aria-label="Account settings"
+                onClick={(e) => e.preventDefault()}
+              >
                 Settings
               </a>
               <a
-                href="#"
+                href="#logout"
                 id="logout-btn"
+                role="menuitem"
+                aria-label="Logout from account"
                 onClick={(e) => {
                   e.preventDefault()
                   onLogout()
