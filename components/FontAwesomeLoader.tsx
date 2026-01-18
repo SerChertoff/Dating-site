@@ -7,8 +7,8 @@ const FONT_AWESOME_URL =
 
 export default function FontAwesomeLoader() {
   useEffect(() => {
-    // Отложенная загрузка Font Awesome - не блокирует критический рендеринг
-    // Используем requestIdleCallback для загрузки в свободное время браузера
+    // Агрессивная отложенная загрузка Font Awesome - только после полной загрузки страницы
+    // Это предотвращает блокировку рендеринга и forced reflow
     const loadFontAwesome = () => {
       // Проверяем, не загружен ли уже Font Awesome
       const existingLink = document.querySelector(
@@ -19,28 +19,61 @@ export default function FontAwesomeLoader() {
         return; // CSS уже загружен
       }
 
-      // Асинхронная загрузка Font Awesome CSS
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = FONT_AWESOME_URL;
-      link.crossOrigin = "anonymous";
-      // Устанавливаем media="print" для асинхронной загрузки, затем меняем на "all"
-      link.media = "print";
-      link.onload = () => {
-        link.media = "all";
-        // Добавляем font-display: swap для всех @font-face правил Font Awesome
-        injectFontDisplaySwap();
-      };
-      document.head.appendChild(link);
+      // Используем более эффективный способ загрузки CSS без блокировки
+      // Загружаем через fetch и вставляем как текст, чтобы избежать блокировки
+      fetch(FONT_AWESOME_URL)
+        .then((response) => response.text())
+        .then((css) => {
+          // Создаем style элемент и вставляем CSS
+          const style = document.createElement("style");
+          style.textContent = css;
+          style.id = "font-awesome-styles";
+          
+          // Применяем font-display: swap ко всем @font-face правилам
+          const optimizedCss = css.replace(
+            /font-display:\s*[^;]+;?/gi,
+            "font-display: swap;"
+          );
+          style.textContent = optimizedCss;
+          
+          document.head.appendChild(style);
+          
+          // Предзагружаем шрифты с font-display: swap
+          preloadFontAwesomeFonts();
+        })
+        .catch(() => {
+          // Fallback: используем стандартный способ загрузки, если fetch не работает
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = FONT_AWESOME_URL;
+          link.crossOrigin = "anonymous";
+          link.media = "print";
+          link.onload = () => {
+            link.media = "all";
+            injectFontDisplaySwap();
+          };
+          document.head.appendChild(link);
+        });
     };
 
-    // Загружаем после того, как критический контент отрендерится
+    // Загружаем только после полной загрузки страницы и всех ресурсов
     if (typeof window !== "undefined") {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(loadFontAwesome, { timeout: 2000 });
+      if (document.readyState === "complete") {
+        // Страница уже загружена, используем requestIdleCallback
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(loadFontAwesome, { timeout: 3000 });
+        } else {
+          setTimeout(loadFontAwesome, 500);
+        }
       } else {
-        // Fallback для браузеров без requestIdleCallback
-        setTimeout(loadFontAwesome, 100);
+        // Ждем полной загрузки страницы
+        window.addEventListener("load", () => {
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(loadFontAwesome, { timeout: 3000 });
+          } else {
+            setTimeout(loadFontAwesome, 500);
+          }
+        });
       }
     }
   }, []);
@@ -48,10 +81,40 @@ export default function FontAwesomeLoader() {
   return null;
 }
 
-// Функция для добавления font-display: swap к шрифтам Font Awesome
+// Предзагрузка шрифтов Font Awesome с оптимизацией
+function preloadFontAwesomeFonts() {
+  const fonts = [
+    {
+      url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2",
+      family: "Font Awesome 6 Free",
+      weight: "900",
+    },
+    {
+      url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2",
+      family: "Font Awesome 6 Brands",
+      weight: "400",
+    },
+    {
+      url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-regular-400.woff2",
+      family: "Font Awesome 6 Free",
+      weight: "400",
+    },
+  ];
+
+  fonts.forEach((font) => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "font";
+    link.type = "font/woff2";
+    link.crossOrigin = "anonymous";
+    link.href = font.url;
+    document.head.appendChild(link);
+  });
+}
+
+// Функция для добавления font-display: swap к шрифтам Font Awesome (fallback)
 function injectFontDisplaySwap() {
   // Создаем стиль для переопределения font-display с более высоким приоритетом
-  // Это переопределит правила Font Awesome после их загрузки
   const style = document.createElement("style");
   style.id = "font-awesome-font-display-override";
   
