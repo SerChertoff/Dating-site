@@ -20,10 +20,10 @@ export default function Header({
   onLogout,
 }: HeaderProps) {
   const sections = [
-    { id: 'home', label: 'Home', icon: 'fas fa-home' },
-    { id: 'matches', label: 'Matches', icon: 'fas fa-heart' },
-    { id: 'messages', label: 'Messages', icon: 'fas fa-envelope' },
-    { id: 'profile', label: 'Profile', icon: 'fas fa-user' },
+    { id: 'home', label: 'Главная', icon: 'fas fa-home' },
+    { id: 'matches', label: 'Пары', icon: 'fas fa-heart' },
+    { id: 'messages', label: 'Сообщения', icon: 'fas fa-envelope' },
+    { id: 'profile', label: 'Профиль', icon: 'fas fa-user' },
   ]
 
   return (
@@ -64,18 +64,18 @@ export default function Header({
             <button
               id="login-btn"
               type="button"
-              aria-label="Login to your account"
+              aria-label="Войти в аккаунт"
               onClick={onLoginClick}
             >
-              Login
+              Войти
             </button>
             <button
               id="signup-btn"
               type="button"
-              aria-label="Sign up for a new account"
+              aria-label="Зарегистрировать новый аккаунт"
               onClick={onSignupClick}
             >
-              Sign Up
+              Регистрация
             </button>
           </div>
         ) : (
@@ -91,33 +91,33 @@ export default function Header({
               <a
                 href="#profile"
                 role="menuitem"
-                aria-label="View my profile"
+                aria-label="Просмотреть мой профиль"
                 onClick={(e) => {
                   e.preventDefault()
                   onSectionChange('profile')
                 }}
               >
-                My Profile
+                Мой профиль
               </a>
               <a
                 href="#settings"
                 role="menuitem"
-                aria-label="Account settings"
+                aria-label="Настройки аккаунта"
                 onClick={(e) => e.preventDefault()}
               >
-                Settings
+                Настройки
               </a>
               <a
                 href="#logout"
                 id="logout-btn"
                 role="menuitem"
-                aria-label="Logout from account"
+                aria-label="Выйти из аккаунта"
                 onClick={(e) => {
                   e.preventDefault()
                   onLogout()
                 }}
               >
-                Logout
+                Выйти
               </a>
             </div>
           </div>

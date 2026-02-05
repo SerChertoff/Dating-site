@@ -92,6 +92,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook - открывается в новой вкладке"
+                title="Facebook"
               >
                 <i className="fab fa-facebook-f" aria-hidden="true"></i>
                 <span className="sr-only">Facebook</span>
@@ -101,6 +102,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter - открывается в новой вкладке"
+                title="Twitter"
               >
                 <i className="fab fa-twitter" aria-hidden="true"></i>
                 <span className="sr-only">Twitter</span>
@@ -110,6 +112,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram - открывается в новой вкладке"
+                title="Instagram"
               >
                 <i className="fab fa-instagram" aria-hidden="true"></i>
                 <span className="sr-only">Instagram</span>
@@ -119,6 +122,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok - открывается в новой вкладке"
+                title="TikTok"
               >
                 <i className="fab fa-tiktok" aria-hidden="true"></i>
                 <span className="sr-only">TikTok</span>

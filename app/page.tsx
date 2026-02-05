@@ -86,11 +86,11 @@ export default function Home() {
         onSignupClick={() => setShowSignupModal(true)}
         onLogout={handleLogout}
       />
-      {activeSection === 'home' ? (
-        <HomeSection onSignupClick={() => setShowSignupModal(true)} />
-      ) : (
-        <main role="main">
-          {activeSection === 'matches' && (
+      <main role="main">
+        {activeSection === 'home' && (
+          <HomeSection onSignupClick={() => setShowSignupModal(true)} />
+        )}
+        {activeSection === 'matches' && (
           <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Загрузка...</div>}>
             <MatchesSection
               currentUser={currentUser}
@@ -112,8 +112,7 @@ export default function Home() {
             />
           </Suspense>
         )}
-        </main>
-      )}
+      </main>
       <Footer />
       {showLoginModal && (
         <Suspense fallback={null}>

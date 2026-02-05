@@ -7,15 +7,16 @@ const FONT_AWESOME_URL =
 
 export default function FontAwesomeLoader() {
   useEffect(() => {
-    // Агрессивная отложенная загрузка Font Awesome - только после полной загрузки страницы
-    // Это предотвращает блокировку рендеринга и forced reflow
+    // Загружаем Font Awesome раньше, но не блокируя рендеринг
+    // Используем DOMContentLoaded для более ранней загрузки
     const loadFontAwesome = () => {
       // Проверяем, не загружен ли уже Font Awesome
       const existingLink = document.querySelector(
         `link[href="${FONT_AWESOME_URL}"]`
       );
+      const existingStyle = document.getElementById("font-awesome-styles");
 
-      if (existingLink) {
+      if (existingLink || existingStyle) {
         return; // CSS уже загружен
       }
 
@@ -26,7 +27,6 @@ export default function FontAwesomeLoader() {
         .then((css) => {
           // Создаем style элемент и вставляем CSS
           const style = document.createElement("style");
-          style.textContent = css;
           style.id = "font-awesome-styles";
           
           // Применяем font-display: swap ко всем @font-face правилам
@@ -56,24 +56,17 @@ export default function FontAwesomeLoader() {
         });
     };
 
-    // Загружаем только после полной загрузки страницы и всех ресурсов
+    // Загружаем после DOMContentLoaded для более ранней загрузки иконок
     if (typeof window !== "undefined") {
-      if (document.readyState === "complete") {
-        // Страница уже загружена, используем requestIdleCallback
-        if ("requestIdleCallback" in window) {
-          requestIdleCallback(loadFontAwesome, { timeout: 3000 });
-        } else {
-          setTimeout(loadFontAwesome, 500);
-        }
-      } else {
-        // Ждем полной загрузки страницы
-        window.addEventListener("load", () => {
-          if ("requestIdleCallback" in window) {
-            requestIdleCallback(loadFontAwesome, { timeout: 3000 });
-          } else {
-            setTimeout(loadFontAwesome, 500);
-          }
+      if (document.readyState === "loading") {
+        // DOM еще загружается
+        document.addEventListener("DOMContentLoaded", () => {
+          // Небольшая задержка для неблокирующей загрузки
+          setTimeout(loadFontAwesome, 100);
         });
+      } else {
+        // DOM уже загружен
+        setTimeout(loadFontAwesome, 100);
       }
     }
   }, []);

@@ -49,7 +49,7 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
   }
 
   return (
-    <main id="home-section" className="active-section" role="main">
+    <section id="home-section" className="active-section">
       <div className="container">
         <section className="hero" aria-label="Hero section">
           {/* Оптимизированное hero изображение для улучшения LCP */}
@@ -144,6 +144,6 @@ export default function HomeSection({ onSignupClick }: HomeSectionProps) {
           </div>
         </section>
       </div>
-    </main>
+    </section>
   )
 }
